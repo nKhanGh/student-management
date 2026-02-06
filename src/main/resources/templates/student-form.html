@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh Sách Sinh Viên</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #2563eb;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        label {
+            color: #374151;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="number"] {
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="number"]:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        input[type="text"]:hover,
+        input[type="email"]:hover,
+        input[type="number"]:hover {
+            border-color: #93c5fd;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        button[type="submit"] {
+            flex: 1;
+            padding: 14px 24px;
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        button[type="submit"]:hover {
+            background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
+        }
+
+        button[type="submit"]:active {
+            transform: translateY(0);
+        }
+
+        a {
+            flex: 1;
+            padding: 14px 24px;
+            background: #f3f4f6;
+            color: #374151;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid #e5e7eb;
+        }
+
+        a:hover {
+            background: #e5e7eb;
+            border-color: #d1d5db;
+            transform: translateY(-2px);
+        }
+
+        .text-danger {
+            color: #dc2626;
+            font-weight: bold;
+            font-size: 13px;
+            margin-top: 4px;
+        }
+
+        input[readonly] {
+            background-color: #f9fafb;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 24px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2 th:text="${student.id == null ? 'Thêm Sinh Viên' : 'Chỉnh Sửa Sinh Viên'}"></h2>
+
+    <form th:action="@{/students/save}" method="post">
+        <!-- Ô nhập ID (readonly khi chỉnh sửa) -->
+        <div class="form-group">
+            <label>ID:</label>
+            <input type="text"
+                   name="id"
+                   th:value="${student.id}"
+                   th:readonly="${student.id != null}"
+                   placeholder="ID sẽ tự động tạo" />
+        </div>
+
+        <div class="form-group">
+            <label>Tên:</label>
+            <input type="text"
+                   name="name"
+                   th:value="${student.name}"
+                   placeholder="Nhập tên sinh viên"
+                   required />
+        </div>
+
+        <div class="form-group">
+            <label>Email:</label>
+            <input type="email"
+                   name="email"
+                   th:value="${student.email}"
+                   placeholder="example@email.com"
+                   required />
+        </div>
+
+        <div class="form-group">
+            <label>Tuổi:</label>
+            <input type="number"
+                   name="age"
+                   th:value="${student.age}"
+                   placeholder="Nhập tuổi"
+                   min="1"
+                   max="100" />
+        </div>
+
+        <div class="button-group">
+            <button type="submit">Lưu</button>
+            <a href="/students">Hủy</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>
