@@ -24,9 +24,18 @@ public class StudentService {
         return repository.findByNameContainingIgnoreCase(keyword);
     }
 
-
-    public void save(Student student) {
+    public void create(Student student) {
+        if(repository.existsById(student.getId())) {
+            throw new IllegalStateException("Student with id " + student.getId() + " already exists");
+        }
         repository.save(student);
+    }
+
+    public void update(Student student) {
+        if(repository.existsById(student.getId())) {
+            repository.save(student);
+        } else
+            throw new IllegalStateException("Student with id " + student.getId() + " does not exist");
     }
 
     public void delete(String id) {

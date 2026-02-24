@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import vn.edu.hcmut.cse.adsoftweng.lab.entity.Student;
 import vn.edu.hcmut.cse.adsoftweng.lab.service.StudentService;
 
@@ -53,8 +54,35 @@ public class StudentWebController {
 
     @PostMapping("/save")
     public String save(Student student) {
-        service.save(student);
+        service.update(student);
         return "redirect:/students";
+    }
+
+    @PostMapping("/create")
+    public String createStudent(@ModelAttribute Student student,
+                                RedirectAttributes redirectAttributes) {
+        try {
+            service.create(student);
+            redirectAttributes.addFlashAttribute("success", "Thêm sinh viên thành công!");
+            return "redirect:/students";
+        } catch (IllegalStateException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            redirectAttributes.addFlashAttribute("student", student);
+            return "redirect:/students/new";
+        }
+    }
+
+    @PostMapping("/update")
+    public String updateStudent(@ModelAttribute Student student,
+                                RedirectAttributes redirectAttributes) {
+        try {
+            service.update(student);
+            redirectAttributes.addFlashAttribute("success", "Cập nhật sinh viên thành công!");
+            return "redirect:/students";
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            return "redirect:/students/" + student.getId() + "/edit";
+        }
     }
 
     @PostMapping("/{id}/delete")
