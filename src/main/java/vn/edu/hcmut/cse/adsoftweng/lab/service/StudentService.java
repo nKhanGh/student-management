@@ -26,7 +26,7 @@ public class StudentService {
 
     public void create(Student student) {
         if(repository.existsById(student.getId())) {
-            throw new IllegalStateException("Student with id " + student.getId() + " already exists");
+            throw new IllegalStateException("Sinh viên với id " + student.getId() + " đã tồn tại.");
         }
         repository.save(student);
     }
@@ -35,7 +35,7 @@ public class StudentService {
         if(repository.existsById(student.getId())) {
             repository.save(student);
         } else
-            throw new IllegalStateException("Student with id " + student.getId() + " does not exist");
+            throw new IllegalStateException("Sinh viên với id " + student.getId() + " chưa tồn tại.");
     }
 
     public void delete(String id) {
